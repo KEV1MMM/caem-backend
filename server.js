@@ -7,7 +7,9 @@ const cors = require("cors");
 const app = express();
 const Contacto = require("./models/Contacto");
 
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -35,8 +37,11 @@ app.post("/api/contacto", async (req, res) => {
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("MongoDB conectado");
-    app.listen(process.env.PORT, () => {
-      console.log(`Servidor en http://127.0.0.1:${process.env.PORT}`);
+
+    const PORT = process.env.PORT || 10000;
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Servidor en puerto ${PORT}`);
     });
   })
   .catch((error) => {
